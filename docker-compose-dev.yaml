@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  yolov7: 
+    image: yolov7
+    runtime: nvidia
+    restart: unless-stopped
+    shm_size: '1gb'
+    privileged: true
+    volumes:
+      - ./:/coco
+      - ./:/yolov7
+    stdin_open: true
+    tty: true
+    working_dir: /yolov7
+    command: bash
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]    
+

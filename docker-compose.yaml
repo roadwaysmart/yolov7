@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  yolov7: 
+    image: yolov7
+    runtime: nvidia
+    restart: unless-stopped
+    shm_size: '1gb'
+    privileged: true
+    volumes:
+      - ./config.yaml:/yolov7/config.yaml
+    stdin_open: true
+    tty: true
+    working_dir: /yolov7
+    # command: python3 rtsp-detect.py --weights yolov7.pt --conf 0.25 --img-size 640 --source stream.txt
+    command: bash
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]    
+
